@@ -20,10 +20,11 @@ productos físicos, podríamos estar hablando de un golpe devastador para la
 industria de la logística, pero, de hecho, ha ocurrido algo muy diferente.
 El sector de la logística ha introducido las innovaciones digitales."""
 
-text = "Digital"
+text = "Digitales"
 
 
 class Solution:
+    # Class constructor.
     def __init__(self):
         pass
 
@@ -36,7 +37,7 @@ class Solution:
             character = self.normalize_accents(text[i])
 
             # If the text has upper characters get it in lower
-            character = self.normalize_upper(text[i])
+            character = self.normalize_upper(character)
 
             text_list.append(character)
             i += 1
@@ -89,7 +90,7 @@ if __name__ == "__main__":
     text_list = solution.text_to_list(text=text)
 
     seen = 0
-    comparation = []
+    current_word = []
 
     # Loop through PARRAFO
     i = 0
@@ -99,20 +100,26 @@ if __name__ == "__main__":
         character = solution.normalize_accents(PARRAFO[i])
 
         # For each character normalize the upper and return it in lower
-        character = solution.normalize_upper(PARRAFO[i])
+        character = solution.normalize_upper(character)
 
         # if character is not a blank space and is an alpahnumeric character,
         # can add it to comparation list unitl found one
         if character != " " and solution.is_alphanumeric(character):
-            comparation.append(character)
+            current_word.append(character)
         else:
             # if found a blank space or non alpahnumeric characher we have a
             # word in a comparation list, so do a comaration with our text_list
-            if comparation == text_list:
+            print(f"current word --> {current_word}")
+            if current_word == text_list:
                 seen += 1
 
             # clear the comparation list after each word
-            comparation = list()
+            current_word = list()
         i += 1
+
+    # Handle the case where the paragraph ends with a word
+    # and no separator character appears afterwards.
+    if current_word == text_list:
+        seen += 1
 
     print(f"{seen} ocurrencias encontradas")
