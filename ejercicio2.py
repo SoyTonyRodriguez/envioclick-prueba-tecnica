@@ -24,7 +24,7 @@ class Solution:
 
     # Compare two values based on a specified operator.
     # If the operator is not recognized, the function returns False.
-    def compare(self, data_value, operator, comparison_value):
+    def evaluate_comparison(self, data_value, operator, comparison_value):
         """Compara dos valores según el operador"""
         if operator == '=':
             return data_value == comparison_value
@@ -62,7 +62,9 @@ if __name__ == "__main__":
         while j < len(input_filter):
             key, operator, value = input_filter[j]
             match = True
-            if not solution.compare(item.get(key), operator, value):
+            if not solution.evaluate_comparison(
+                item.get(key), operator, value
+            ):
                 match = False
                 break
 
