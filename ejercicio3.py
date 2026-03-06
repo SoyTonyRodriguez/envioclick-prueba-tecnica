@@ -16,22 +16,22 @@ class SheetExcel():
     # Initializes the number of rows and columns in the sheet, and creates a
     # sheet represented as a 2D list where each cell is initialized to None.
     # The default number of rows is 5 and the default number of columns is 10
-    def __init__(self, filas: int = 5, columnas: int = 10) -> None:
-        self.filas = filas
-        self.columnas = columnas
-        self.hoja = list()
+    def __init__(self, rows: int = 5, columns: int = 10) -> None:
+        self.rows = rows
+        self.columns = columns
+        self.sheet = list()
 
         # Create a 2D list to represent the sheet, where each cell is
         # initialized to None.
         i = 0
-        while i < self.filas:
-            list_columnas = list()
+        while i < self.rows:
+            list_columns = list()
             j = 0
-            while j < self.columnas:
-                list_columnas.append(None)
+            while j < self.columns:
+                list_columns.append(None)
                 j += 1
 
-            self.hoja.append(list_columnas)
+            self.sheet.append(list_columns)
             i += 1
 
     # Check if a string can be converted to a valid number.
@@ -46,12 +46,12 @@ class SheetExcel():
 
     # Validate if the given row and column indices are within the bounds of
     # the sheet.
-    def _valid_position(self, fila: int, columna: int) -> bool:
+    def _valid_position(self, row: int, column: int) -> bool:
         try:
-            if fila < 0 or fila >= self.filas:
+            if row < 0 or row >= self.rows:
                 return False
 
-            if columna < 0 or columna >= self.columnas:
+            if column < 0 or column >= self.columns:
                 return False
 
             return True
@@ -59,10 +59,10 @@ class SheetExcel():
             return False
 
     # Insert information into a cell specified by its row and column indices.
-    def insert_info(self, fila: int, columna: int, value: str) -> None:
+    def insert_info(self, row: int, column: int, value: str) -> None:
         # Validate the position of the cell and the value before inserting it
         # into the sheet.
-        if not self._valid_position(fila, columna):
+        if not self._valid_position(row, column):
             print("Posición inválida")
             return
 
@@ -74,13 +74,13 @@ class SheetExcel():
 
         # Insert the value into the specified cell in the sheet after
         # converting it to a float.
-        self.hoja[fila][columna] = float(value)
+        self.sheet[row][column] = float(value)
 
     # Actualizar información en una celda
-    def update_data(self, fila: int, columna: int, new_value: str) -> None:
+    def update_data(self, row: int, column: int, new_value: str) -> None:
         # Validate the position of the cell and the value before updating it
         # in the sheet.
-        if not self._valid_position(fila, columna):
+        if not self._valid_position(row, column):
             print("Posición inválida")
             return
 
@@ -93,20 +93,20 @@ class SheetExcel():
         # Check if there is existing information in the specified cell before
         # updating it. If the cell is empty (None), print a message indicating
         # that there is no information to update.
-        if self.hoja[fila][columna] is None:
+        if self.sheet[row][column] is None:
             print("No hay informacion para actualizar")
             return
         else:
-            self.hoja[fila][columna] = float(new_value)
+            self.sheet[row][column] = float(new_value)
 
     # Validate if a cell specified by its row and column indices is empty.
-    def is_empty(self, fila: int, columna: int) -> bool:
+    def is_empty(self, row: int, column: int) -> bool:
         # Validate the position of the cell before checking if it is empty.
-        if not self._valid_position(fila, columna):
+        if not self._valid_position(row, column):
             print("Posición inválida")
             return True
 
-        if self.hoja[fila][columna] is None:
+        if self.sheet[row][column] is None:
             return True
         return False
 
@@ -120,10 +120,10 @@ class SheetExcel():
         # Iterate through each row and column of the sheet to print its
         # contents.
         i = 0
-        while i < self.filas:
+        while i < self.rows:
             j = 0
-            while j < self.columnas:
-                value = self.hoja[i][j]
+            while j < self.columns:
+                value = self.sheet[i][j]
                 if value is None:
                     print("[    ]", end=" ")
                 else:
@@ -135,15 +135,15 @@ class SheetExcel():
     # Given a row index, retrieve all the elements in that row and print the
     # sum of all the values in that row. Empty cells are ignored in the sum
     # calculation.
-    def row_summary(self, fila: int) -> None:
-        entry_fila = self.hoja[fila]
-        print(f"fila {fila} --> {entry_fila}")
+    def row_summary(self, row: int) -> None:
+        entry_fila = self.sheet[row]
+        print(f"fila {row} --> {entry_fila}")
 
         # Iterate through each cell in the specified row to retrieve the
         # values and calculate the total sum of the values in that row.
         i = 0
         total = 0
-        while i < self.columnas:
+        while i < self.columns:
             if entry_fila[i] is not None:
                 total += entry_fila[i]
             i += 1
@@ -160,8 +160,8 @@ class SheetExcel():
         # Iterate through each row in the specified column to retrieve the
         # values and calculate the total sum of the values in that column.
         i = 0
-        while i < self.filas:
-            value = self.hoja[i][column]
+        while i < self.rows:
+            value = self.sheet[i][column]
             entry_column.append(value)
             if value is not None:
                 total += value
@@ -178,26 +178,26 @@ if __name__ == "__main__":
 
     # Insert values into specific cells in the sheet and print the sheet to
     # show the changes.
-    sheet_excel.insert_info(fila=2, columna=3, value=40)
-    sheet_excel.insert_info(fila=2, columna=2, value=10)
+    sheet_excel.insert_info(row=2, column=3, value=40)
+    sheet_excel.insert_info(row=2, column=2, value=10)
 
     print("After inserting values:")
     sheet_excel.print_sheet()
 
     # Update the value of a specific cell in the sheet and print the sheet to
     # show the changes.
-    sheet_excel.update_data(fila=2, columna=1, new_value=100)
+    sheet_excel.update_data(row=2, column=1, new_value=100)
     print("After updating a value:")
     sheet_excel.print_sheet()
 
     # Check if a specific cell is empty and print the result.
     print("Checking if cell (1, 1) is empty:")
-    print("Celda vacia" if sheet_excel.is_empty(fila=1, columna=1)
+    print("Celda vacia" if sheet_excel.is_empty(row=1, column=1)
           else "Celda con valor")
 
     # Calculate and print the summary of a specific row and column in the
     # sheet.
     print("Row summary for specified row:")
-    sheet_excel.row_summary(fila=2)
+    sheet_excel.row_summary(row=2)
     print("Column summary for specified column:")
     sheet_excel.column_summary(column=3)
