@@ -14,14 +14,12 @@
 
 from python_test.input import data, input_filter, sort_type
 
-SORT_FIELD = 'priority'
-SORT_TYPE = sort_type
-
 
 class Solution:
     # Class constructor.
-    def __init__(self):
-        pass
+    def __init__(self, sort_field='priority', sort_type=sort_type):
+        self.sort_field = sort_field
+        self.sort_type = sort_type
 
     # Compare two values based on a specified operator.
     # If the operator is not recognized, the function returns False.
@@ -54,7 +52,7 @@ class Solution:
 
         # Choose a pivot element from the list
         pivot = data[len(data) // 2]
-        pivot_value = pivot.get(SORT_FIELD)
+        pivot_value = pivot.get(self.sort_field)
 
         # Partition the list into three parts: elements less than the pivot,
         # elements equal to the pivot, and elements greater than the pivot.
@@ -70,9 +68,9 @@ class Solution:
 
             # Compare the value of the SORT_FIELD in the current item with the
             # pivot value and partition accordingly.
-            if item.get(SORT_FIELD) < pivot_value:
+            if item.get(self.sort_field) < pivot_value:
                 head.append(item)
-            elif item.get(SORT_FIELD) > pivot_value:
+            elif item.get(self.sort_field) > pivot_value:
                 tail.append(item)
             else:
                 middle.append(item)
@@ -80,13 +78,13 @@ class Solution:
 
         # Recursively sort the head and tail partitions and concatenate the
         # results with the middle partition to produce the sorted list.
-        if SORT_TYPE == 'ASC':
+        if self.sort_type == 'ASC':
             return self.quicksort(head) + middle + self.quicksort(tail)
-        elif SORT_TYPE == 'DESC':
+        elif self.sort_type == 'DESC':
             return self.quicksort(tail) + middle + self.quicksort(head)
         else:
             print("Sort type not supported")
-            return []
+            return data
 
 
 if __name__ == "__main__":
@@ -110,6 +108,11 @@ if __name__ == "__main__":
         j = 0
         while j < len(input_filter):
             key, operator, value = input_filter[j]
+
+            if item.get(key) is None:
+                match = False
+                break
+
             if not solution.evaluate_comparison(
                 item.get(key), operator, value
             ):
