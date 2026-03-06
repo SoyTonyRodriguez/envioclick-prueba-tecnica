@@ -60,6 +60,10 @@ class SheetExcel():
 
     # Insert information into a cell specified by its row and column indices.
     def insert_info(self, row: int, column: int, value: str) -> None:
+        # Convert indexing to user friendly
+        row -= 1
+        column -= 1
+
         # Validate the position of the cell and the value before inserting it
         # into the sheet.
         if not self._valid_position(row, column):
@@ -78,6 +82,10 @@ class SheetExcel():
 
     # Actualizar información en una celda
     def update_data(self, row: int, column: int, new_value: str) -> None:
+        # Convert indexing to user friendly
+        row -= 1
+        column -= 1
+
         # Validate the position of the cell and the value before updating it
         # in the sheet.
         if not self._valid_position(row, column):
@@ -101,6 +109,10 @@ class SheetExcel():
 
     # Validate if a cell specified by its row and column indices is empty.
     def is_empty(self, row: int, column: int) -> bool:
+        # Convert indexing to user friendly
+        row -= 1
+        column -= 1
+
         # Validate the position of the cell before checking if it is empty.
         if not self._valid_position(row, column):
             print("Posición inválida")
@@ -136,8 +148,11 @@ class SheetExcel():
     # sum of all the values in that row. Empty cells are ignored in the sum
     # calculation.
     def row_summary(self, row: int) -> None:
+        # Convert indexing to user friendly
+        row -= 1
+
         entry_fila = self.sheet[row]
-        print(f"fila {row} --> {entry_fila}")
+        print(f"fila {row + 1} --> {entry_fila}")
 
         # Iterate through each cell in the specified row to retrieve the
         # values and calculate the total sum of the values in that row.
@@ -154,6 +169,9 @@ class SheetExcel():
     # the sum of all the values in that column. Empty cells are ignored in the
     # sum calculation.
     def column_summary(self, column: int) -> None:
+        # Convert indexing to user friendly
+        column -= 1
+
         entry_column = []
         total = 0
 
@@ -166,7 +184,7 @@ class SheetExcel():
             if value is not None:
                 total += value
             i += 1
-        print(f"Column: {column} --> {entry_column}")
+        print(f"Column: {column + 1} --> {entry_column}")
         print(f"total column --> {total}")
 
 
@@ -180,6 +198,7 @@ if __name__ == "__main__":
     # show the changes.
     sheet_excel.insert_info(row=2, column=3, value=40)
     sheet_excel.insert_info(row=2, column=2, value=10)
+    sheet_excel.insert_info(row=1, column=1, value=5)
 
     print("After inserting values:")
     sheet_excel.print_sheet()
