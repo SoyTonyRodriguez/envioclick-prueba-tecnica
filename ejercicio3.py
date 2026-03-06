@@ -58,11 +58,15 @@ class SheetExcel():
         except Exception:
             return False
 
+    # Convert user-friendly row and column indices (starting from 1) to
+    # zero-based indices used internally in the sheet representation.
+    def _user_to_index(self, row, column):
+        return row - 1, column - 1
+
     # Insert information into a cell specified by its row and column indices.
     def insert_info(self, row: int, column: int, value: str) -> None:
-        # Convert indexing to user friendly
-        row -= 1
-        column -= 1
+        # Convert user-friendly row and column indices to zero-based indices.
+        row, column = self._user_to_index(row, column)
 
         # Validate the position of the cell and the value before inserting it
         # into the sheet.
@@ -82,9 +86,8 @@ class SheetExcel():
 
     # Actualizar información en una celda
     def update_data(self, row: int, column: int, new_value: str) -> None:
-        # Convert indexing to user friendly
-        row -= 1
-        column -= 1
+        # Convert user-friendly row and column indices to zero-based indices.
+        row, column = self._user_to_index(row, column)
 
         # Validate the position of the cell and the value before updating it
         # in the sheet.
@@ -109,9 +112,8 @@ class SheetExcel():
 
     # Validate if a cell specified by its row and column indices is empty.
     def is_empty(self, row: int, column: int) -> bool:
-        # Convert indexing to user friendly
-        row -= 1
-        column -= 1
+        # Convert user-friendly row and column indices to zero-based indices.
+        row, column = self._user_to_index(row, column)
 
         # Validate the position of the cell before checking if it is empty.
         if not self._valid_position(row, column):
@@ -148,8 +150,8 @@ class SheetExcel():
     # sum of all the values in that row. Empty cells are ignored in the sum
     # calculation.
     def row_summary(self, row: int) -> None:
-        # Convert indexing to user friendly
-        row -= 1
+        # Convert user-friendly row index to zero-based index.
+        row, _ = self._user_to_index(row, 1)
 
         entry_fila = self.sheet[row]
         print(f"fila {row + 1} --> {entry_fila}")
@@ -169,8 +171,8 @@ class SheetExcel():
     # the sum of all the values in that column. Empty cells are ignored in the
     # sum calculation.
     def column_summary(self, column: int) -> None:
-        # Convert indexing to user friendly
-        column -= 1
+        # Convert user-friendly column index to zero-based index.
+        column, _ = self._user_to_index(1, column)
 
         entry_column = []
         total = 0
