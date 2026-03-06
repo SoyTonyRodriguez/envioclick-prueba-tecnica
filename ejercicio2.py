@@ -15,6 +15,7 @@
 from python_test.input import data, input_filter, sort_type
 
 SORT_FIELD = 'priority'
+SORT_TYPE = sort_type
 
 
 class Solution:
@@ -41,6 +42,51 @@ class Solution:
         elif operator == '>=':
             return data_value >= comparison_value
         return False
+
+    # Sort a list of dictionaries based on the value of a specified field
+    # using the quicksort algorithm.
+    # The sorting order (ascending or descending) is determined by the
+    # SORT_TYPE variable.
+    def quicksort(self, data):
+        # Base case: if the list has 0 or 1 elements, it is already sorted.
+        if len(data) <= 1:
+            return data
+
+        # Choose a pivot element from the list
+        pivot = data[len(data) // 2]
+        pivot_value = pivot.get(SORT_FIELD)
+
+        # Partition the list into three parts: elements less than the pivot,
+        # elements equal to the pivot, and elements greater than the pivot.
+        head = list()
+        middle = list()
+        tail = list()
+
+        # Iterate through the list and partition the elements based on their
+        # comparison with the pivot value.
+        i = 0
+        while i < len(data):
+            item = data[i]
+
+            # Compare the value of the SORT_FIELD in the current item with the
+            # pivot value and partition accordingly.
+            if item.get(SORT_FIELD) < pivot_value:
+                head.append(item)
+            elif item.get(SORT_FIELD) > pivot_value:
+                tail.append(item)
+            else:
+                middle.append(item)
+            i += 1
+
+        # Recursively sort the head and tail partitions and concatenate the
+        # results with the middle partition to produce the sorted list.
+        if SORT_TYPE == 'ASC':
+            return self.quicksort(head) + middle + self.quicksort(tail)
+        elif SORT_TYPE == 'DESC':
+            return self.quicksort(tail) + middle + self.quicksort(head)
+        else:
+            print("Sort type not supported")
+            return []
 
 
 if __name__ == "__main__":
@@ -76,3 +122,7 @@ if __name__ == "__main__":
 
     print(f"filtered data --> {len(filter_data)}")
     print(filter_data)
+
+    sorted_filter_data = solution.quicksort(filter_data)
+    print(f"sorted filtered data --> {len(sorted_filter_data)}")
+    print(sorted_filter_data)
