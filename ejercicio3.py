@@ -17,6 +17,16 @@ class SheetExcel():
     # sheet represented as a 2D list where each cell is initialized to None.
     # The default number of rows is 5 and the default number of columns is 10
     def __init__(self, rows: int = 5, columns: int = 10) -> None:
+        # Validate that the provided number of rows and columns are integers
+        # before initializing the sheet.
+        if not isinstance(rows, int) or not isinstance(columns, int):
+            raise TypeError("rows y columns deben ser enteros")
+
+        # Validate that the provided number of rows and columns are greater
+        # than 0 before initializing the sheet.
+        if rows <= 0 or columns <= 0:
+            raise ValueError("rows y columns deben ser mayores que 0")
+
         self.rows = rows
         self.columns = columns
         self.sheet = list()
@@ -40,27 +50,28 @@ class SheetExcel():
             # Tries converting the string to a float
             float(value)
             return True
-        except ValueError:
+        except (TypeError, ValueError):
             # If a ValueError is raised, the string is not a valid number
             return False
 
-    # Validate if the given row and column indices are within the bounds of
-    # the sheet.
-    def _valid_position(self, row: int, column: int) -> bool:
-        try:
-            if row < 0 or row >= self.rows:
-                return False
+    # Validate if the given row and column indices are within the valid range
+    # of the sheet.
+    def _valid_position(self, row: int, column: int) -> None:
+        if not isinstance(row, int) or not isinstance(column, int):
+            raise TypeError("row y column deben ser enteros")
 
-            if column < 0 or column >= self.columns:
-                return False
+        if row < 0 or row >= self.rows:
+            raise ValueError("row fuera de rango")
 
-            return True
-        except Exception:
-            return False
+        if column < 0 or column >= self.columns:
+            raise ValueError("column fuera de rango")
 
     # Convert user-friendly row and column indices (starting from 1) to
     # zero-based indices used internally in the sheet representation.
     def _user_to_index(self, row, column):
+        if not isinstance(row, int) or not isinstance(column, int):
+            raise TypeError("row y column deben ser enteros")
+
         return row - 1, column - 1
 
     # Insert information into a cell specified by its row and column indices.
@@ -70,15 +81,15 @@ class SheetExcel():
 
         # Validate the position of the cell and the value before inserting it
         # into the sheet.
-        if not self._valid_position(row, column):
-            print("Posición inválida")
-            return
+        self._valid_position(row, column)
 
         # Validate that the value is a valid number before inserting it into
         # the sheet.
         if not self._is_valid_number(value):
-            print("Se debe proporcionar un numero valido")
-            return
+            raise ValueError("Se debe proporcionar un número válido")
+
+        if self.sheet[row][column] is not None:
+            raise ValueError("La celda ya contiene información")
 
         # Insert the value into the specified cell in the sheet after
         # converting it to a float.
@@ -91,24 +102,20 @@ class SheetExcel():
 
         # Validate the position of the cell and the value before updating it
         # in the sheet.
-        if not self._valid_position(row, column):
-            print("Posición inválida")
-            return
+        self._valid_position(row, column)
 
         # Validate that the new value is a valid number before updating it in
         # the sheet.
         if not self._is_valid_number(new_value):
-            print("Se debe proporcionar un numero valido")
-            return
+            raise ValueError("Se debe proporcionar un número válido")
 
         # Check if there is existing information in the specified cell before
-        # updating it. If the cell is empty (None), print a message indicating
+        # updating it. If the cell is empty (None), raise an error indicating
         # that there is no information to update.
         if self.sheet[row][column] is None:
-            print("No hay informacion para actualizar")
-            return
-        else:
-            self.sheet[row][column] = float(new_value)
+            raise ValueError("No hay información para actualizar")
+
+        self.sheet[row][column] = float(new_value)
 
     # Validate if a cell specified by its row and column indices is empty.
     def is_empty(self, row: int, column: int) -> bool:
@@ -116,9 +123,7 @@ class SheetExcel():
         row, column = self._user_to_index(row, column)
 
         # Validate the position of the cell before checking if it is empty.
-        if not self._valid_position(row, column):
-            print("Posición inválida")
-            return True
+        self._valid_position(row, column)
 
         if self.sheet[row][column] is None:
             return True
@@ -150,6 +155,12 @@ class SheetExcel():
     # sum of all the values in that row. Empty cells are ignored in the sum
     # calculation.
     def row_summary(self, row: int) -> None:
+        if not isinstance(row, int):
+            raise TypeError("row debe ser un entero")
+
+        if row < 1 or row > self.rows:
+            raise ValueError("row fuera de rango")
+
         # Convert user-friendly row index to zero-based index.
         row, _ = self._user_to_index(row, 1)
 
@@ -171,6 +182,12 @@ class SheetExcel():
     # the sum of all the values in that column. Empty cells are ignored in the
     # sum calculation.
     def column_summary(self, column: int) -> None:
+        if not isinstance(column, int):
+            raise TypeError("column debe ser un entero")
+
+        if column < 1 or column > self.columns:
+            raise ValueError("column fuera de rango")
+
         # Convert user-friendly column index to zero-based index.
         column, _ = self._user_to_index(1, column)
 
@@ -207,7 +224,7 @@ if __name__ == "__main__":
 
     # Update the value of a specific cell in the sheet and print the sheet to
     # show the changes.
-    sheet_excel.update_data(row=2, column=1, new_value=100)
+    sheet_excel.update_data(row=1, column=1, new_value=100)
     print("After updating a value:")
     sheet_excel.print_sheet()
 
