@@ -40,7 +40,7 @@ class Solution:
         return text_list
 
     # Method to detect if a character is an alphanumeric
-    def is_alphanumeric(self, character: chr) -> bool:
+    def is_alphanumeric(self, character: str) -> bool:
         if (
             (character >= "A" and character <= "Z")
                 or (character >= "a" and character <= "z")
@@ -49,7 +49,7 @@ class Solution:
         return False
 
     # Method to detect accents and return the character without it
-    def normalize_accents(self, character: chr) -> chr:
+    def normalize_accents(self, character: str) -> str:
         if character == "á" or character == "Á":
             return "a"
         if character == "é" or character == "É":
