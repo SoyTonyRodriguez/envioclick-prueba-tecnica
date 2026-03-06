@@ -91,28 +91,43 @@ if __name__ == "__main__":
     # Create an instance of the solution class.
     solution = Solution()
 
-    # obtener filtros
+    # List to store the filtered data that meets the criteria specified
     filter_data = []
 
     print(f"initial data --> {len(data)}")
     print(data)
 
+    # List to store the remaining data that does not meet the filter criteria
     data_remaining = []
 
+    # Iterate through the input data and apply the filters specified in the
+    # input_filter list. Each item is evaluated against all filters, and if it
+    # meets all criteria, it is added to the filter_data list; otherwise, it
+    # is added to the data_remaining list.
     i = 0
     while i < len(data):
         item = data[i]
         match = True
 
-        # Aplicar todos los filtros
+        # Apply all filters to the current item. If any filter is not
+        # satisfied, the item is marked as not matching and the loop breaks.
         j = 0
         while j < len(input_filter):
+
+            # Extract the key, operator, and value from the current filter.
             key, operator, value = input_filter[j]
 
+            # If the item does not have the key specified in the filter,
+            # it cannot match the filter criteria, so it is marked as not
+            # matching and the loop breaks.
             if item.get(key) is None:
                 match = False
                 break
 
+            # Evaluate the comparison between the item's value for the key and
+            # the filter's comparison value using the specified operator. If
+            # the comparison fails, the item is marked as not matching and the
+            # loop breaks.
             if not solution.evaluate_comparison(
                 item.get(key), operator, value
             ):
@@ -120,6 +135,8 @@ if __name__ == "__main__":
                 break
             j += 1
 
+        # If the item matches all filters, it is added to the filter_data list;
+        # otherwise, it is added to the data_remaining list.
         if match:
             filter_data.append(item)
         else:
@@ -127,9 +144,14 @@ if __name__ == "__main__":
 
         i += 1
 
+    # Sort the filtered data using the quicksort method.
+    # The sorting is based on the field specified in the sort_field attribute
     sorted_filter_data = solution.quicksort(filter_data)
-    print("Resultados filtrados ordenados")
-    print(sorted_filter_data)
+    # print("Sorted filter data")
+    # print(sorted_filter_data)
 
+    # Combine the sorted filtered data with the remaining data to produce the
+    # final result. The sorted filtered data is placed at the beginning of the
+    # list, followed by the remaining data in its original order.
     final_result = sorted_filter_data + data_remaining
     print(final_result)
