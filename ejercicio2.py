@@ -99,30 +99,34 @@ if __name__ == "__main__":
     print(f"initial data --> {len(data)}")
     print(data)
 
+    data_remaining = []
+
     i = 0
     while i < len(data):
         item = data[i]
+        match = True
 
         # Aplicar todos los filtros
         j = 0
         while j < len(input_filter):
             key, operator, value = input_filter[j]
-            match = True
             if not solution.evaluate_comparison(
                 item.get(key), operator, value
             ):
                 match = False
                 break
-
-            # if all filters match, add the item to the filtered data list.
-            if match:
-                filter_data.append(item)
             j += 1
+
+        if match:
+            filter_data.append(item)
+        else:
+            data_remaining.append(item)
+
         i += 1
 
-    print(f"filtered data --> {len(filter_data)}")
-    print(filter_data)
-
     sorted_filter_data = solution.quicksort(filter_data)
-    print(f"sorted filtered data --> {len(sorted_filter_data)}")
+    print("Resultados filtrados ordenados")
     print(sorted_filter_data)
+
+    final_result = sorted_filter_data + data_remaining
+    print(final_result)

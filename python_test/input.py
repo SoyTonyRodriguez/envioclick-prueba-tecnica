@@ -33,7 +33,8 @@ data = [
 
 input_filter = [
     ('weight', '=', 3),
-    ('width', '>', 1),
+    # ('width', '>', 1),
+    ('cost', '>=', 150),
 ]
 
 sort_type = "DESC"
