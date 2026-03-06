@@ -87,7 +87,6 @@ if __name__ == "__main__":
 
     # Transform string in a list of chars
     text_list = solution.text_to_list(text=text)
-    # print(text_list)
 
     seen = 0
     comparation = []
@@ -99,6 +98,9 @@ if __name__ == "__main__":
         # and remove the accents in case the character has one
         character = solution.normalize_accents(PARRAFO[i])
 
+        # For each character normalize the upper and return it in lower
+        character = solution.normalize_upper(PARRAFO[i])
+
         # if character is not a blank space and is an alpahnumeric character,
         # can add it to comparation list unitl found one
         if character != " " and solution.is_alphanumeric(character):
@@ -106,7 +108,6 @@ if __name__ == "__main__":
         else:
             # if found a blank space or non alpahnumeric characher we have a
             # word in a comparation list, so do a comaration with our text_list
-            # print(f"comparting {comparation} == {text_list} --> {comparation == text_list}")
             if comparation == text_list:
                 seen += 1
 
