@@ -50,6 +50,11 @@ class Solution:
             return data_value >= comparison_value
         return False
 
+    # Get the value of the sort field from a dictionary item. If the item does
+    # not have the sort field, it returns a default value of 0
+    def _get_sort_field_value(self, item: dict) -> any:
+        return item.get(self.sort_field, 0)
+
     # Sort a list of dictionaries based on the value of a specified field
     # using the quicksort algorithm.
     # The sorting order (ascending or descending) is determined by the
@@ -61,7 +66,7 @@ class Solution:
 
         # Choose a pivot element from the list
         pivot = data[len(data) // 2]
-        pivot_value = pivot.get(self.sort_field)
+        pivot_value = self._get_sort_field_value(pivot)
 
         # Partition the list into three parts: elements less than the pivot,
         # elements equal to the pivot, and elements greater than the pivot.
@@ -74,12 +79,13 @@ class Solution:
         i = 0
         while i < len(data):
             item = data[i]
+            item_value = self._get_sort_field_value(item)
 
             # Compare the value of the SORT_FIELD in the current item with the
             # pivot value and partition accordingly.
-            if item.get(self.sort_field) < pivot_value:
+            if item_value < pivot_value:
                 head.append(item)
-            elif item.get(self.sort_field) > pivot_value:
+            elif item_value > pivot_value:
                 tail.append(item)
             else:
                 middle.append(item)
@@ -163,4 +169,5 @@ if __name__ == "__main__":
     # final result. The sorted filtered data is placed at the beginning of the
     # list, followed by the remaining data in its original order.
     final_result = sorted_filter_data + data_remaining
+    print("\n-_-_-_-_-_-_ final result -_-_-_-_-_-_")
     print(final_result)
