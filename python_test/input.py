@@ -37,4 +37,4 @@ input_filter = [
     ('cost', '>=', 150),
 ]
 
-sort_type = "DESC"
+sort_type = "ASC"

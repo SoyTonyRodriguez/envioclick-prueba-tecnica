@@ -17,13 +17,22 @@ from python_test.input import data, input_filter, sort_type
 
 class Solution:
     # Class constructor.
-    def __init__(self, sort_field='priority', sort_type=sort_type):
+    def __init__(
+            self, sort_field: str = 'priority', sort_type: str = 'ASC'
+    ):
+        # Validate the sort type and set it to 'ASC' if it is not valid.
+        if sort_type != "ASC" and sort_type != "DESC":
+            sort_type = "ASC"
+
+        # Initialize the sort field and sort type attributes of the class.
         self.sort_field = sort_field
         self.sort_type = sort_type
 
     # Compare two values based on a specified operator.
     # If the operator is not recognized, the function returns False.
-    def evaluate_comparison(self, data_value, operator, comparison_value):
+    def evaluate_comparison(
+            self, data_value: any, operator: str, comparison_value: any
+    ) -> bool:
         """Compara dos valores según el operador"""
         if operator == '=':
             return data_value == comparison_value
@@ -45,7 +54,7 @@ class Solution:
     # using the quicksort algorithm.
     # The sorting order (ascending or descending) is determined by the
     # SORT_TYPE variable.
-    def quicksort(self, data):
+    def quicksort(self, data: list) -> list:
         # Base case: if the list has 0 or 1 elements, it is already sorted.
         if len(data) <= 1:
             return data
@@ -89,7 +98,7 @@ class Solution:
 
 if __name__ == "__main__":
     # Create an instance of the solution class.
-    solution = Solution()
+    solution = Solution(sort_type=sort_type)
 
     # List to store the filtered data that meets the criteria specified
     filter_data = []
