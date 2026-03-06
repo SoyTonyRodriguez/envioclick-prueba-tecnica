@@ -20,7 +20,7 @@ productos físicos, podríamos estar hablando de un golpe devastador para la
 industria de la logística, pero, de hecho, ha ocurrido algo muy diferente.
 El sector de la logística ha introducido las innovaciones digitales."""
 
-text = "logística"
+text = "Digital"
 
 
 class Solution:
@@ -34,6 +34,9 @@ class Solution:
         while i < len(text):
             # If the text has accents, return the character without them.
             character = self.normalize_accents(text[i])
+
+            # If the text has upper characters get it in lower
+            character = self.normalize_upper(text[i])
 
             text_list.append(character)
             i += 1
@@ -66,6 +69,18 @@ class Solution:
             return "n"
         return character
 
+    # Method to detect an upper character and return it in lower version
+    def normalize_upper(self, character: str) -> str:
+        # Get the ascii value of character to use it like numbers
+        assci_value = ord(character)
+
+        # The 65 and 90, represents A and Z values in ASCII table
+        if 65 <= assci_value <= 90:
+            # return the ascci_value adding 32, because is the same
+            # charaacter but in lower
+            return chr(assci_value + 32)
+        return character
+
 
 if __name__ == "__main__":
     solution = Solution()
@@ -89,8 +104,8 @@ if __name__ == "__main__":
         if character != " " and solution.is_alphanumeric(character):
             comparation.append(character)
         else:
-            # if found a blank space we have a word in a comparation list, so
-            # do a comaration with our text_list
+            # if found a blank space or non alpahnumeric characher we have a
+            # word in a comparation list, so do a comaration with our text_list
             # print(f"comparting {comparation} == {text_list} --> {comparation == text_list}")
             if comparation == text_list:
                 seen += 1
