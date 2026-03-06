@@ -28,22 +28,29 @@ class Solution:
     def __init__(self):
         pass
 
-    # Method to transform a string in a list of characters
+    # Convert a text string into a list of normalized characters.
+    # During the process, accents are removed and uppercase letters
+    # are converted to lowercase to ensure consistent comparisons.
     def text_to_list(self, text: str) -> list:
         text_list = list()
+
+        # Iterate through the text character by character.
         i = 0
         while i < len(text):
-            # If the text has accents, return the character without them.
+            # Normalize the character if it contains an accent.
             character = self.normalize_accents(text[i])
 
-            # If the text has upper characters get it in lower
+            # Convert the character to lowercase if it is uppercase.
             character = self.normalize_upper(character)
 
+            # Append the normalized character to the resulting list.
             text_list.append(character)
             i += 1
         return text_list
 
-    # Method to detect if a character is an alphanumeric
+    # Determine whether a character is alphanumeric.
+    # A character is considered valid if it is a letter (A-Z, a-z)
+    # or a digit (0-9).
     def is_alphanumeric(self, character: str) -> bool:
         if (
             (character >= "A" and character <= "Z")
@@ -52,7 +59,7 @@ class Solution:
             return True
         return False
 
-    # Method to detect accents and return the character without it
+    # Replace accented characters with their non-accented equivalents.
     def normalize_accents(self, character: str) -> str:
         if character == "á" or character == "Á":
             return "a"
@@ -68,52 +75,57 @@ class Solution:
             return "u"
         if character == "ñ" or character == "Ñ":
             return "n"
+
+        # If the character does not contain an accent, return it unchanged.
         return character
 
-    # Method to detect an upper character and return it in lower version
+    # Convert uppercase characters to lowercase using ASCII values.
     def normalize_upper(self, character: str) -> str:
-        # Get the ascii value of character to use it like numbers
+        # Obtain the ASCII value of the character.
         assci_value = ord(character)
 
-        # The 65 and 90, represents A and Z values in ASCII table
+        # ASCII values 65–90 correspond to uppercase letters (A–Z).
         if 65 <= assci_value <= 90:
-            # return the ascci_value adding 32, because is the same
-            # charaacter but in lower
+            # Adding 32 converts the character to its lowercase equivalent.
             return chr(assci_value + 32)
         return character
 
 
 if __name__ == "__main__":
+    # Create an instance of the solution class.
     solution = Solution()
 
-    # Transform string in a list of chars
+    # Convert the search text into a list of normalized characters.
     text_list = solution.text_to_list(text=text)
 
+    # Counter for the number of occurrences found.
     seen = 0
-    current_word = []
 
-    # Loop through PARRAFO
+    # Temporary buffer used to store the characters of the current
+    # word being evaluated in the paragraph.
+    current_word = list()
+
+    # Iterate through the paragraph character by character.
     i = 0
     while i < len(PARRAFO):
-        # Each loop through in string is a character, so save it
-        # and remove the accents in case the character has one
+        # Normalize the current character by removing accents.
         character = solution.normalize_accents(PARRAFO[i])
 
-        # For each character normalize the upper and return it in lower
+        # Convert the character to lowercase if necessary.
         character = solution.normalize_upper(character)
 
-        # if character is not a blank space and is an alpahnumeric character,
-        # can add it to comparation list unitl found one
+        # If the character is alphanumeric and not a space,
+        # it is considered part of a word.
         if character != " " and solution.is_alphanumeric(character):
+            # If a space or non-alphanumeric character is found,
+            # the current word has finished.
             current_word.append(character)
         else:
-            # if found a blank space or non alpahnumeric characher we have a
-            # word in a comparation list, so do a comaration with our text_list
-            print(f"current word --> {current_word}")
+            # Compare the detected word with the target text.
             if current_word == text_list:
                 seen += 1
 
-            # clear the comparation list after each word
+            # Reset the buffer to start building the next word.
             current_word = list()
         i += 1
 
