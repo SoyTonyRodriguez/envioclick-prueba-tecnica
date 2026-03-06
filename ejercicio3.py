@@ -15,7 +15,8 @@ class SheetExcel():
     # Class constructor
     # Initializes the number of rows and columns in the sheet, and creates a
     # sheet represented as a 2D list where each cell is initialized to None.
-    def __init__(self, filas=5, columnas=10):
+    # The default number of rows is 5 and the default number of columns is 10
+    def __init__(self, filas: int = 5, columnas: int = 10) -> None:
         self.filas = filas
         self.columnas = columnas
         self.hoja = list()
@@ -34,10 +35,10 @@ class SheetExcel():
             i += 1
 
     # Check if a string can be converted to a valid number.
-    def _is_valid_number(self, s):
+    def _is_valid_number(self, value: str) -> bool:
         try:
             # Tries converting the string to a float
-            float(s)
+            float(value)
             return True
         except ValueError:
             # If a ValueError is raised, the string is not a valid number
@@ -45,7 +46,7 @@ class SheetExcel():
 
     # Validate if the given row and column indices are within the bounds of
     # the sheet.
-    def _valid_position(self, fila, columna):
+    def _valid_position(self, fila: int, columna: int) -> bool:
         try:
             if fila < 0 or fila >= self.filas:
                 return False
@@ -58,7 +59,7 @@ class SheetExcel():
             return False
 
     # Insert information into a cell specified by its row and column indices.
-    def insert_info(self, fila, columna, value):
+    def insert_info(self, fila: int, columna: int, value: str) -> None:
         # Validate the position of the cell and the value before inserting it
         # into the sheet.
         if not self._valid_position(fila, columna):
@@ -76,7 +77,7 @@ class SheetExcel():
         self.hoja[fila][columna] = float(value)
 
     # Actualizar información en una celda
-    def update_data(self, fila, columna, new_value):
+    def update_data(self, fila: int, columna: int, new_value: str) -> None:
         # Validate the position of the cell and the value before updating it
         # in the sheet.
         if not self._valid_position(fila, columna):
@@ -99,7 +100,7 @@ class SheetExcel():
             self.hoja[fila][columna] = float(new_value)
 
     # Validate if a cell specified by its row and column indices is empty.
-    def is_empty(self, fila, columna):
+    def is_empty(self, fila: int, columna: int) -> bool:
         # Validate the position of the cell before checking if it is empty.
         if not self._valid_position(fila, columna):
             print("Posición inválida")
@@ -134,7 +135,7 @@ class SheetExcel():
     # Given a row index, retrieve all the elements in that row and print the
     # sum of all the values in that row. Empty cells are ignored in the sum
     # calculation.
-    def row_summary(self, fila):
+    def row_summary(self, fila: int) -> None:
         entry_fila = self.hoja[fila]
         print(f"fila {fila} --> {entry_fila}")
 
@@ -152,7 +153,7 @@ class SheetExcel():
     # Given a column index, retrieve all the elements in that column and print
     # the sum of all the values in that column. Empty cells are ignored in the
     # sum calculation.
-    def column_summary(self, column):
+    def column_summary(self, column: int) -> None:
         entry_column = []
         total = 0
 
